@@ -29,7 +29,7 @@ strategy:
 steps:
   - name: Generate go test Slice
     id: test_split
-    uses: brandonc/go-test-split-action@v0.1
+    uses: brandonc/go-test-split-action@v1.0.0
     with:
       total: ${{ matrix.parallel }}
       index: ${{ matrix.index }}

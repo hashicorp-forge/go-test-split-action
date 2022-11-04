@@ -3402,42 +3402,51 @@ function formatTests(tests) {
         ")$");
 }
 function setupGoTestLister(env) {
-    const lister = new TestLister(env || {});
+    const total = Number.parseInt(core.getInput("total"));
+    const index = Number.parseInt(core.getInput("index"));
+    if (Number.isNaN(total) || Number.isNaN(index)) {
+        throw new Error(`Unexpected input: index "${core.getInput("index")}" of "${core.getInput("total")}" total`);
+    }
+    if (index > total - 1 || index < 0) {
+        throw new Error(`Slice index out of range: Requested index ${index} of ${total} total slices`);
+    }
+    const lister = new TestLister(total, index, env || {});
     return lister.outputTestList.bind(lister);
 }
-function listTests(env) {
-    return __awaiter(this, void 0, void 0, function* () {
-        let g = yield io.which("go");
-        const args = ["test", core.getInput("packages") || "./...", "-list", "."];
-        core.debug(`Listing go tests with the following command: ${g} ${args.join(" ")}`);
-        const cmd = (0,external_child_process_.spawnSync)(g, args, {
-            encoding: "utf-8",
-            env: Object.assign(Object.assign({}, process.env), env),
-        });
-        if (cmd.error) {
-            throw new Error(`Could not execute go process: ${cmd.error.message}`);
-        }
-        if (cmd.status != 0) {
-            throw new Error(`go test failed (exit code ${cmd.status}) The error output was:\n\n${cmd.stderr}\n\n${cmd.stdout}`);
-        }
-        return (cmd.stdout + "\n" + cmd.stderr).split("\n");
-    });
-}
 class TestLister {
-    constructor(env) {
+    constructor(total, index, env) {
+        this.total = total;
+        this.index = index;
         this.env = env;
+    }
+    listTests() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let g = yield io.which("go");
+            const args = [
+                "test",
+                core.getInput("packages") || "./...",
+                "-list",
+                core.getInput("list") || ".",
+                core.getInput("flags"),
+            ];
+            core.debug(`Listing go tests with the following command: ${g} ${args.join(" ")}`);
+            const cmd = (0,external_child_process_.spawnSync)(g, args, {
+                cwd: process.env.GITHUB_WORKSPACE,
+                encoding: "utf-8",
+                env: Object.assign(Object.assign({}, process.env), this.env),
+            });
+            if (cmd.error) {
+                throw new Error(`Could not execute go process: ${cmd.error.message}`);
+            }
+            if (cmd.status != 0) {
+                throw new Error(`go test failed (exit code ${cmd.status}) The error output was:\n\n${cmd.stderr}\n\n${cmd.stdout}`);
+            }
+            return cmd.stdout.split("\n");
+        });
     }
     outputTestList() {
         return __awaiter(this, void 0, void 0, function* () {
-            const total = Number.parseInt(core.getInput("total"));
-            const index = Number.parseInt(core.getInput("index"));
-            if (Number.isNaN(total) || Number.isNaN(index)) {
-                throw new Error(`Unexpected input: index "${core.getInput("index")}" of "${core.getInput("total")}" total`);
-            }
-            if (index > total - 1 || index < 0) {
-                throw new Error(`Slice index out of range: Requested index ${index} of ${total} total slices`);
-            }
-            const tests = (yield listTests(this.env)).filter((line, testIndex) => line.startsWith("Test") && testIndex % total === index);
+            const tests = (yield this.listTests()).filter((line, testIndex) => line.startsWith("Test") && testIndex % this.total === this.index);
             core.setOutput("run", formatTests(tests));
         });
     }
