@@ -24,9 +24,9 @@ export function setupGoTestLister(
 
   if (Number.isNaN(total) || Number.isNaN(index)) {
     throw new Error(
-      `Unexpected input: index "${core.getInput(
-        "index"
-      )}" of "${core.getInput("total")}" total`
+      `Unexpected input: index "${core.getInput("index")}" of "${core.getInput(
+        "total"
+      )}" total`
     );
   }
 

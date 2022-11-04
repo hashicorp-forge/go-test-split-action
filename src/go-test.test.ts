@@ -42,7 +42,7 @@ describe("outputTestList", () => {
     inputs.total = "1";
     inputs.index = "0";
 
-    await setupGoTestLister(exampleAppEnv)()
+    await setupGoTestLister(exampleAppEnv)();
 
     expect(outputs["run"]).toStrictEqual(
       "^(?:TestExample0|TestExample1|TestExample2|TestExample3|TestExample4)$"
@@ -53,44 +53,36 @@ describe("outputTestList", () => {
     inputs.total = "5";
     inputs.index = "0";
 
-    await setupGoTestLister(exampleAppEnv)()
+    await setupGoTestLister(exampleAppEnv)();
 
-    expect(outputs["run"]).toStrictEqual(
-      "^(?:TestExample0)$"
-    );
+    expect(outputs["run"]).toStrictEqual("^(?:TestExample0)$");
   });
 
   it("lists first, fourth test for 0 of 3", async () => {
     inputs.total = "3";
     inputs.index = "0";
 
-    await setupGoTestLister(exampleAppEnv)()
+    await setupGoTestLister(exampleAppEnv)();
 
-    expect(outputs["run"]).toStrictEqual(
-      "^(?:TestExample0|TestExample3)$"
-    );
+    expect(outputs["run"]).toStrictEqual("^(?:TestExample0|TestExample3)$");
   });
 
   it("lists second, fifth test for 1 of 3", async () => {
     inputs.total = "3";
     inputs.index = "1";
 
-    await setupGoTestLister(exampleAppEnv)()
+    await setupGoTestLister(exampleAppEnv)();
 
-    expect(outputs["run"]).toStrictEqual(
-      "^(?:TestExample1|TestExample4)$"
-    );
+    expect(outputs["run"]).toStrictEqual("^(?:TestExample1|TestExample4)$");
   });
 
   it("lists third test for 2 of 3", async () => {
     inputs.total = "3";
     inputs.index = "2";
 
-    await setupGoTestLister(exampleAppEnv)()
+    await setupGoTestLister(exampleAppEnv)();
 
-    expect(outputs["run"]).toStrictEqual(
-      "^(?:TestExample2)$"
-    );
+    expect(outputs["run"]).toStrictEqual("^(?:TestExample2)$");
   });
 
   it("throws range error for invalid index", async () => {
@@ -99,7 +91,9 @@ describe("outputTestList", () => {
 
     expect(async () => {
       await setupGoTestLister(exampleAppEnv)();
-    }).rejects.toThrow("Slice index out of range: Requested index 3 of 3 total slices")
+    }).rejects.toThrow(
+      "Slice index out of range: Requested index 3 of 3 total slices"
+    );
   });
 
   it("return unexpected input error for invalid total", async () => {
@@ -108,18 +102,16 @@ describe("outputTestList", () => {
 
     expect(async () => {
       await setupGoTestLister(exampleAppEnv)();
-    }).rejects.toThrow("Unexpected input: index \"\" of \"zombie\" total")
+    }).rejects.toThrow('Unexpected input: index "" of "zombie" total');
   });
 
-  it("cutomizes test list pattern using list input", async () => {
+  it("customizes test list pattern using list input", async () => {
     inputs.total = "1";
     inputs.index = "0";
-    inputs.list = "Example[2,3]"
+    inputs.list = "Example[2,3]";
 
-    await setupGoTestLister(exampleAppEnv)()
+    await setupGoTestLister(exampleAppEnv)();
 
-    expect(outputs["run"]).toStrictEqual(
-      "^(?:TestExample2|TestExample3)$"
-    );
+    expect(outputs["run"]).toStrictEqual("^(?:TestExample2|TestExample3)$");
   });
 });
