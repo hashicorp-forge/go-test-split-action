@@ -1,12 +1,10 @@
 import * as core from "@actions/core";
-import * as io from "@actions/io";
 
 import {setupGoTestLister} from "./go-test";
 
 describe("outputTestList", () => {
   let inputSpy: jest.SpyInstance;
   let outputSpy: jest.SpyInstance;
-  let ioSpy: jest.SpyInstance;
 
   let inputs: any;
   let outputs: any;
@@ -25,9 +23,6 @@ describe("outputTestList", () => {
 
     outputSpy = jest.spyOn(core, "setOutput");
     outputSpy.mockImplementation((name, value) => (outputs[name] = value));
-
-    ioSpy = jest.spyOn(io, "which");
-    ioSpy.mockImplementation(_ => "/usr/local/bin/go");
   });
 
   afterEach(() => {
