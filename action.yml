@@ -1,7 +1,8 @@
 name: 'Go Test Split'
 author: 'Brandon Croft'
 description: >
-  Splits go tests as an output that can be passed as the run argument to `go test` in a matrix
+  Given some splitting parameters (total slices and slice index), lists a subset of tests
+  suitable for passing into go test -run.
 runs:
   using: 'node16'
   main: 'dist/index.js'
@@ -18,8 +19,11 @@ inputs:
     description: "The packages string to use when executing `go test <packages> -list .` to find tests. Defaults to './...' (all packages recursively)"
     required: false
   list:
-    description: "The list pattern to use when executing `go test <packages> -list <list>` to find tests. Defaults to '.' (all tests)"
+    description: "The list pattern to use when executing `go test <packages> -list <list>`. Defaults to '.' (all tests)"
+    required: false
+  flags:
+    description: "Additional flags to pass to `go test <packages> -list ."
     required: false
 outputs:
-  tests-slice:
+  run:
     description: "A slice of tests, suitable to pass into the -run argument of go test"

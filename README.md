@@ -40,4 +40,8 @@ steps:
 
 ## Notes
 
-Lists tests by executing `go test ./... -list .` in the `GITHUB_WORKSPACE` (checkout) directory. Use the `packages` input to customize the packages string, and the `list` input to customize the list pattern. (See action.yml for details)
+Lists tests by executing `go test ./... -list .` in the `GITHUB_WORKSPACE` (checkout) directory.
+
+Use the `packages` input to customize the packages string, and the `list` input to customize the list pattern. Pass additional test flags using `flags` (See action.yml for details)
+
+

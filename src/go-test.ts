@@ -58,6 +58,7 @@ class TestLister {
       core.getInput("packages") || "./...",
       "-list",
       core.getInput("list") || ".",
+      core.getInput("flags"),
     ];
 
     core.debug(

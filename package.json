@@ -1,8 +1,8 @@
 {
   "name": "test-split-go",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": "true",
-  "description": "Splits go tests as an output that can be passed as the run argument to `go test` in a matrix",
+  "description": "Github action that lists a subset of tests suitable for passing into go test -run",
   "main": "dist/index.js",
   "scripts": {
     "build": "ncc build src/action.ts -o dist --license licenses.txt",
