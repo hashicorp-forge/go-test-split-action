@@ -25,5 +25,11 @@ jobs:
       - name: Format Check
         run: npm run format-check
 
+      - name: Verify
+        run: |
+          npm run build
+          # Fail if "npm run build" generated new changes in dist
+          git update-index --refresh dist/* && git diff-index --quiet HEAD dist
+
       - name: Test
         run: npm run test
