@@ -5,6 +5,11 @@
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -104,6 +109,11 @@ function escapeProperty(s) {
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -447,6 +457,11 @@ Object.defineProperty(exports, "toPlatformPath", ({ enumerable: true, get: funct
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 // For internal use, subject to change.
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -512,6 +527,11 @@ exports.prepareKeyValueMessage = prepareKeyValueMessage;
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -596,6 +616,11 @@ exports.OidcClient = OidcClient;
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -661,6 +686,11 @@ exports.toPlatformPath = toPlatformPath;
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -951,6 +981,11 @@ exports.summary = _summary;
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -998,6 +1033,11 @@ exports.toCommandProperties = toCommandProperties;
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -1086,6 +1126,11 @@ exports.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHand
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -1698,6 +1743,11 @@ const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => ((c[k.toLowerCa
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.checkBypass = exports.getProxyUrl = void 0;
@@ -1766,6 +1816,11 @@ exports.checkBypass = checkBypass;
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -1950,6 +2005,11 @@ exports.getCmdPath = getCmdPath;
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -2297,6 +2357,11 @@ function copyFile(srcFile, destFile, force) {
 /***/ 294:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 module.exports = __nccwpck_require__(219);
 
 
@@ -2306,6 +2371,11 @@ module.exports = __nccwpck_require__(219);
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 var net = __nccwpck_require__(808);
@@ -2578,6 +2648,11 @@ exports.debug = debug; // for test
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2664,6 +2739,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2694,6 +2774,11 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2709,6 +2794,11 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2761,6 +2851,11 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2776,6 +2871,11 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2807,6 +2907,11 @@ function rng() {
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2837,6 +2942,11 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2883,6 +2993,11 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2997,6 +3112,11 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -3020,6 +3140,11 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -3105,6 +3230,11 @@ function _default(name, version, hashfunc) {
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -3149,6 +3279,11 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -3172,6 +3307,11 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -3196,6 +3336,11 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -3379,6 +3524,10 @@ var io = __nccwpck_require__(436);
 // EXTERNAL MODULE: external "child_process"
 var external_child_process_ = __nccwpck_require__(81);
 ;// CONCATENATED MODULE: ./src/go-test.ts
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3453,6 +3602,10 @@ class TestLister {
 }
 
 ;// CONCATENATED MODULE: ./src/action.ts
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 var action_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
