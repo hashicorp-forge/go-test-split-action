@@ -29,7 +29,7 @@ strategy:
 steps:
   - name: Generate go test Slice
     id: test_split
-    uses: brandonc/go-test-split-action@v1
+    uses: hashicorp-forge/go-test-split-action@v1
     with:
       total: ${{ matrix.parallel }}
       index: ${{ matrix.index }}

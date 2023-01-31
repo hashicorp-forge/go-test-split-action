@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brandonc/go-test-split-action.git"
+    "url": "git+https://github.com/hashicorp-forge/go-test-split-action.git"
   },
   "author": {
     "name": "Brandon Croft",
