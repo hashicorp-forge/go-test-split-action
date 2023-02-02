@@ -24,7 +24,7 @@ A string containing the tests to run that is suitable for use in the go test `-r
 strategy:
   fail-fast: false
   matrix:
-    parallel: 2
+    parallel: [2]
     index: [0, 1]
 steps:
   - name: Generate go test Slice
@@ -43,5 +43,3 @@ steps:
 Lists tests by executing `go test ./... -list .` in the `GITHUB_WORKSPACE` (checkout) directory.
 
 Use the `packages` input to customize the packages string, and the `list` input to customize the list pattern. Pass additional test flags using `flags` (See action.yml for details)
-
-
