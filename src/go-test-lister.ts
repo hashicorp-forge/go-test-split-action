@@ -4,12 +4,13 @@
  */
 
 import {spawnSync} from "child_process";
+import * as fs from "fs";
 import {DefaultLogger as log} from "./logger";
 import JUnitStrategy from "./strategies/junit";
 import NaiveStrategy from "./strategies/naive";
 
 interface Strategy {
-  listFilterFunc(line: string, testIndex: number): boolean
+  listFilterFunc(line: string, testIndex: number): boolean;
 }
 
 export type ListerOptions = {
@@ -77,14 +78,32 @@ export class GoTestLister {
   }
 
   public async outputTestListForRunArg(): Promise<string> {
-    let strategy: Strategy = new NaiveStrategy(this.opts.total, this.opts.index)
     const allTests = await this.listTests();
+    let testsForIndex: string[] = [];
 
-    if(this.opts.junitSummary) {
-      strategy = new JUnitStrategy(this.opts.total, this.opts.index, this.opts.junitSummary, allTests)
+    try {
+      if (this.opts.junitSummary) {
+        const strategy = new JUnitStrategy(
+          this.opts.total,
+          this.opts.index,
+          this.opts.junitSummary,
+          allTests
+        );
+        testsForIndex = allTests.filter(strategy.listFilterFunc.bind(strategy));
+      }
+    } catch (error) {
+      log.warning(
+        `Failed to use junit splitting strategy (falling back to naive strategy): ${error}`
+      );
+
+      const fallbackStrategy = new NaiveStrategy(
+        this.opts.total,
+        this.opts.index
+      );
+      testsForIndex = allTests.filter(
+        fallbackStrategy.listFilterFunc.bind(fallbackStrategy)
+      );
     }
-
-    const testsForIndex = allTests.filter(strategy.listFilterFunc.bind(strategy));
 
     log.debug(
       `Output populated with these specific tests:\n${testsForIndex.join("\n")}`

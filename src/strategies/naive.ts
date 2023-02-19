@@ -1,6 +1,6 @@
 export default class NaiveStrategy {
-  private total: number
-  private index: number
+  private total: number;
+  private index: number;
 
   constructor(total: number, index: number) {
     this.total = total;
