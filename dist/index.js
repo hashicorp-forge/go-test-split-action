@@ -3349,6 +3349,23 @@ module.exports = require("util");
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__nccwpck_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -3372,13 +3389,26 @@ var __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __nccwpck_require__.r(__webpack_exports__);
 
+// EXPORTS
+__nccwpck_require__.d(__webpack_exports__, {
+  "configure": () => (/* binding */ configure)
+});
+
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(186);
 // EXTERNAL MODULE: ./node_modules/@actions/io/lib/io.js
 var io = __nccwpck_require__(436);
 // EXTERNAL MODULE: external "child_process"
 var external_child_process_ = __nccwpck_require__(81);
-;// CONCATENATED MODULE: ./src/go-test.ts
+;// CONCATENATED MODULE: ./src/logger.ts
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
+const DefaultLogger = core;
+
+;// CONCATENATED MODULE: ./src/go-test-lister.ts
 /**
  * Copyright (c) HashiCorp, Inc.
  * SPDX-License-Identifier: MPL-2.0
@@ -3394,50 +3424,35 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 
-
-function formatTests(tests) {
-    return ("^(?:" +
-        tests.reduce((acc, test) => {
-            if (acc.length == 0) {
-                return test;
-            }
-            return acc + "|" + test;
-        }, "") +
-        ")$");
-}
-function setupGoTestLister(env) {
-    const total = Number.parseInt(core.getInput("total"));
-    const index = Number.parseInt(core.getInput("index"));
-    if (Number.isNaN(total) || Number.isNaN(index)) {
-        throw new Error(`Unexpected input: index "${core.getInput("index")}" of "${core.getInput("total")}" total`);
+class GoTestLister {
+    constructor(opts) {
+        this.opts = opts;
     }
-    if (index > total - 1 || index < 0) {
-        throw new Error(`Slice index out of range: Requested index ${index} of ${total} total slices`);
-    }
-    const lister = new TestLister(total, index, env || {});
-    return lister.outputTestList.bind(lister);
-}
-class TestLister {
-    constructor(total, index, env) {
-        this.total = total;
-        this.index = index;
-        this.env = env;
+    formatTests(tests) {
+        return ("^(?:" +
+            tests.reduce((acc, test) => {
+                if (acc.length == 0) {
+                    return test;
+                }
+                return acc + "|" + test;
+            }, "") +
+            ")$");
     }
     listTests() {
         return __awaiter(this, void 0, void 0, function* () {
-            let g = yield io.which("go");
+            let g = this.opts.whichGo;
             const args = [
                 "test",
-                core.getInput("packages") || "./...",
+                this.opts.packages,
                 "-list",
-                core.getInput("list") || ".",
-                core.getInput("flags"),
+                this.opts.list,
+                this.opts.flags,
             ];
-            core.debug(`Listing go tests with the following command: ${g} ${args.join(" ")}`);
+            DefaultLogger.info(`Listing go tests with the following command: ${g} ${args.join(" ")}`);
             const cmd = (0,external_child_process_.spawnSync)(g, args, {
-                cwd: process.env.GITHUB_WORKSPACE,
+                cwd: this.opts.workingDirectory,
                 encoding: "utf-8",
-                env: Object.assign(Object.assign({}, process.env), this.env),
+                env: Object.assign(Object.assign({}, process.env), this.opts.env),
             });
             if (cmd.error) {
                 throw new Error(`Could not execute go process: ${cmd.error.message}`);
@@ -3448,10 +3463,13 @@ class TestLister {
             return cmd.stdout.split("\n");
         });
     }
-    outputTestList() {
+    outputTestListForRunArg() {
         return __awaiter(this, void 0, void 0, function* () {
-            const tests = (yield this.listTests()).filter((line, testIndex) => line.startsWith("Test") && testIndex % this.total === this.index);
-            core.setOutput("run", formatTests(tests));
+            const strategyNaive = (line, testIndex) => line.startsWith("Test") &&
+                testIndex % this.opts.total === this.opts.index;
+            const tests = (yield this.listTests()).filter(strategyNaive);
+            DefaultLogger.debug(`Output populated with these specific tests:\n${tests.join("\n")}`);
+            return this.formatTests(tests);
         });
     }
 }
@@ -3472,9 +3490,37 @@ var action_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _a
 };
 
 
+
+function configure(whichGo, env) {
+    let opts = {
+        // The go binary-- in GHA, this should be the result of await io.which("go")
+        whichGo,
+        // Slice input params
+        total: Number.parseInt(core.getInput("total")),
+        index: Number.parseInt(core.getInput("index")),
+        // Go test input params
+        packages: core.getInput("packages") || "./...",
+        list: core.getInput("list") || ".",
+        flags: core.getInput("flags"),
+        // Env
+        workingDirectory: process.env.GITHUB_WORKSPACE,
+        env,
+    };
+    // Input validation
+    if (Number.isNaN(opts.total) || Number.isNaN(opts.index)) {
+        throw new Error(`Unexpected input: index "${core.getInput("index")}" of "${core.getInput("total")}" total`);
+    }
+    if (opts.index > opts.total - 1 || opts.index < 0) {
+        throw new Error(`Slice index out of range: Requested index ${opts.index} of ${opts.total} total slices`);
+    }
+    return new GoTestLister(opts);
+}
 (() => action_awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield core.group("Generate go test Slice", setupGoTestLister());
+        const lister = configure(yield io.which("go"));
+        yield core.group("Generate go test Slice", () => action_awaiter(void 0, void 0, void 0, function* () {
+            core.setOutput("run", yield lister.outputTestListForRunArg());
+        }));
     }
     catch (error) {
         core.setFailed(error.message);
