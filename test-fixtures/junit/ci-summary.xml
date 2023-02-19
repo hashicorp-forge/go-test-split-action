@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<testsuites failures="0" errors="0" tests="4" skipped="0">
+  <testsuite tests="4" failures="0" time="3.390000" name="github.com/hashicorp-forge/go-test-split-action" timestamp="2023-02-18T14:47:58Z">
+    <testcase classname="github.com/hashicorp-forge/go-test-split-action" name="Test0" time="1.000000"/>
+    <testcase classname="github.com/hashicorp-forge/go-test-split-action" name="Test1" time="0.400000"/>
+    <testcase classname="github.com/hashicorp-forge/go-test-split-action" name="Test2" time="0.400000"/>
+    <testcase classname="github.com/hashicorp-forge/go-test-split-action" name="Test3" time="1.590000"/>
+  </testsuite>
+</testsuites>

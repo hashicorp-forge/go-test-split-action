@@ -25,6 +25,9 @@ export function configure(
     list: core.getInput("list") || ".",
     flags: core.getInput("flags"),
 
+    // JUnit option
+    junitSummary: core.getInput("junit-summary"),
+
     // Env
     workingDirectory: process.env.GITHUB_WORKSPACE,
     env,
