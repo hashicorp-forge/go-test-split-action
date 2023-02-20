@@ -88,7 +88,7 @@ export default class JUnitStrategy {
       ).toFixed(1)}% of all tests`
     );
 
-    // Sort all the found timings in reverse order (longtest time first)
+    // Sort all the found timings in reverse order (longest time first)
     timings.sort((a, b) => b.timing - a.timing);
 
     // Initialize a list of lists with exactly _total_ items
@@ -127,9 +127,27 @@ export default class JUnitStrategy {
     remainingTests.forEach(name => {
       const bestList = this.lists[this.chooseBestList()];
 
+      log.debug(`"${name}" was not found in the timing data.`);
+
       bestList.list.add(name);
       bestList.caseTimeTotal += medianTime;
     });
+
+    if (remainingTests.size > 0) {
+      log.debug(
+        `Tests that were not found in the summary have been assigned the media time ${Math.floor(
+          medianTime
+        )}s`
+      );
+    }
+  }
+
+  public estimatedDuration(): number {
+    if (this.lists === undefined) {
+      this.precomputeTestLists();
+    }
+
+    return this.lists[this.index].caseTimeTotal;
   }
 
   public listFilterFunc(line: string): boolean {

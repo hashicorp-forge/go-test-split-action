@@ -90,6 +90,12 @@ export class GoTestLister {
           allTests
         );
         testsForIndex = allTests.filter(strategy.listFilterFunc.bind(strategy));
+        const duration = strategy.estimatedDuration();
+        const minutes = Math.floor(duration / 60);
+        const seconds = Math.ceil(duration - minutes * 60);
+        log.info(
+          `This slice has ${testsForIndex.length} tests and is estimated to finish in ${minutes}m ${seconds}s`
+        );
       }
     } catch (error) {
       log.warning(

@@ -5472,7 +5472,7 @@ class JUnitStrategy {
         });
         DefaultLogger.info(`Found ${timings.length} testcase timings, which is ${((timings.length / this.allTestNames.length) *
             100).toFixed(1)}% of all tests`);
-        // Sort all the found timings in reverse order (longtest time first)
+        // Sort all the found timings in reverse order (longest time first)
         timings.sort((a, b) => b.timing - a.timing);
         // Initialize a list of lists with exactly _total_ items
         this.lists = [];
@@ -5495,9 +5495,19 @@ class JUnitStrategy {
         // We'll estimate their time using the median time from the tests in the summary.
         remainingTests.forEach(name => {
             const bestList = this.lists[this.chooseBestList()];
+            DefaultLogger.debug(`"${name}" was not found in the timing data.`);
             bestList.list.add(name);
             bestList.caseTimeTotal += medianTime;
         });
+        if (remainingTests.size > 0) {
+            DefaultLogger.debug(`Tests that were not found in the summary have been assigned the media time ${Math.floor(medianTime)}s`);
+        }
+    }
+    estimatedDuration() {
+        if (this.lists === undefined) {
+            this.precomputeTestLists();
+        }
+        return this.lists[this.index].caseTimeTotal;
     }
     listFilterFunc(line) {
         if (this.lists === undefined) {
@@ -5584,6 +5594,10 @@ class GoTestLister {
                 if (this.opts.junitSummary) {
                     const strategy = new JUnitStrategy(this.opts.total, this.opts.index, this.opts.junitSummary, allTests);
                     testsForIndex = allTests.filter(strategy.listFilterFunc.bind(strategy));
+                    const duration = strategy.estimatedDuration();
+                    const minutes = Math.floor(duration / 60);
+                    const seconds = Math.ceil(duration - minutes * 60);
+                    DefaultLogger.info(`This slice has ${testsForIndex.length} tests and is estimated to finish in ${minutes}m ${seconds}s`);
                 }
             }
             catch (error) {
