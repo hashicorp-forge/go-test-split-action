@@ -7,7 +7,7 @@ export default class NaiveStrategy {
     this.index = index;
   }
 
-  public listFilterFunc(line: string, testIndex: number): boolean {
-    return line.startsWith("Test") && testIndex % this.total === this.index;
+  public listFilterFunc(_: string, testIndex: number): boolean {
+    return testIndex % this.total === this.index;
   }
 }

@@ -74,12 +74,12 @@ export class GoTestLister {
       );
     }
 
-    return cmd.stdout.split("\n");
+    return cmd.stdout.split("\n").filter(line => line.startsWith("Test"));
   }
 
   public async outputTestListForRunArg(): Promise<string> {
     const allTests = await this.listTests();
-    let testsForIndex: string[] = [];
+    let testsForIndex: string[] = null;
 
     try {
       if (this.opts.junitSummary) {
@@ -90,9 +90,11 @@ export class GoTestLister {
           allTests
         );
         testsForIndex = allTests.filter(strategy.listFilterFunc.bind(strategy));
+
         const duration = strategy.estimatedDuration();
         const minutes = Math.floor(duration / 60);
         const seconds = Math.ceil(duration - minutes * 60);
+
         log.info(
           `This slice has ${testsForIndex.length} tests and is estimated to finish in ${minutes}m ${seconds}s`
         );
@@ -101,7 +103,9 @@ export class GoTestLister {
       log.warning(
         `Failed to use junit splitting strategy (falling back to naive strategy): ${error}`
       );
+    }
 
+    if (testsForIndex === null) {
       const fallbackStrategy = new NaiveStrategy(
         this.opts.total,
         this.opts.index

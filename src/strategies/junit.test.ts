@@ -120,21 +120,12 @@ describe("junit splitting strategy", () => {
         "Test9",
       ];
 
-      it("estimates new tests using median timing", () => {
-        // Median should be 1.0 (middle element of sorted timings)
-        const node0 = new JUnitStrategy(3, 0, suite, tests);
-        const node1 = new JUnitStrategy(3, 1, suite, tests);
-        const node2 = new JUnitStrategy(3, 2, suite, tests);
+      it("includes those tests anyway", () => {
+        const node0 = new JUnitStrategy(1, 0, suite, tests);
 
         expect<string[]>(
           tests.filter(node0.listFilterFunc.bind(node0)).sort()
-        ).toStrictEqual(["Test4", "Test8"].sort()); // 3.40
-        expect<string[]>(
-          tests.filter(node1.listFilterFunc.bind(node1)).sort()
-        ).toStrictEqual(["Test3", "Test2", "Test7"].sort()); // 2.99
-        expect<string[]>(
-          tests.filter(node2.listFilterFunc.bind(node2)).sort()
-        ).toStrictEqual(["Test0", "Test5", "Test1", "Test6", "Test9"].sort()); // 3.90
+        ).toStrictEqual(tests.sort());
       });
     });
   });

@@ -5454,33 +5454,43 @@ class JUnitStrategy {
             attributeNamePrefix: "@",
         });
         const junitData = parser.parse(data, true);
-        // An ordered list of tests that include timings, ordered by their duration
-        const timings = [];
-        // A set of test names that include timings
-        const testsWithTimings = new Set();
         const cases = Array.isArray((_a = junitData === null || junitData === void 0 ? void 0 : junitData.testsuites) === null || _a === void 0 ? void 0 : _a.testsuite)
             ? Array.from((_b = junitData === null || junitData === void 0 ? void 0 : junitData.testsuites) === null || _b === void 0 ? void 0 : _b.testsuite).flatMap((suite) => suite.testcase)
             : Array.from((_c = junitData === null || junitData === void 0 ? void 0 : junitData.testsuites) === null || _c === void 0 ? void 0 : _c.testsuite.testcase);
-        // Convert this raw XML object structure to a map of test name -> timing and log which
-        // tests actually have timings.
-        cases.forEach((testcase) => {
-            timings.push({
-                name: testcase["@name"],
-                timing: Number.parseFloat(testcase["@time"]),
-            });
-            testsWithTimings.add(testcase["@name"]);
+        let casesByName = {};
+        cases.forEach(c => {
+            casesByName[c["@name"]] = c;
         });
-        DefaultLogger.info(`Found ${timings.length} testcase timings, which is ${((timings.length / this.allTestNames.length) *
-            100).toFixed(1)}% of all tests`);
+        let timingsFound = 0;
+        // An ordered list of tests that include timings, ordered by their duration
+        let totalTiming = 0;
+        const timings = this.allTestNames.map((name, index) => {
+            let testcase = casesByName[name];
+            if (testcase) {
+                const timing = Number.parseFloat(testcase["@time"]);
+                totalTiming += timing;
+                timingsFound += 1;
+                return {
+                    name: testcase["@name"],
+                    timing: timing,
+                };
+            }
+            const averageTiming = index > 0 ? totalTiming / (index + 1) : 1.0;
+            DefaultLogger.debug(`Could not find timing data for ${name}, substituting default value of ${averageTiming}s (the average so far)`);
+            return {
+                name,
+                timing: averageTiming,
+            };
+        });
         // Sort all the found timings in reverse order (longest time first)
         timings.sort((a, b) => b.timing - a.timing);
+        DefaultLogger.info(`Found ${timingsFound} testcase timings, which is ${((timingsFound / this.allTestNames.length) *
+            100).toFixed(1)}% of all tests`);
         // Initialize a list of lists with exactly _total_ items
         this.lists = [];
         for (let i = 0; i < this.total; i++) {
             this.lists.push({ list: new Set(), caseTimeTotal: 0.0 });
         }
-        const remainingTests = new Set(this.allTestNames);
-        const medianTime = timings.length === 0 ? 0.1 : timings[timings.length / 2].timing;
         // Add each test to the list that has the smallest total timing sum. Add the new timing
         // (or a placeholder value of the median time for new tests) to the running total of that list.
         timings.forEach(testWithTiming => {
@@ -5489,19 +5499,7 @@ class JUnitStrategy {
             bestList.list.add(testWithTiming.name);
             bestList.caseTimeTotal += testWithTiming.timing;
             DefaultLogger.debug(`Assigning ${testWithTiming.name} to list ${bestIndex}, which now has a ${bestList.caseTimeTotal} estimated runtime (previously ${bestList.caseTimeTotal - testWithTiming.timing})`);
-            remainingTests.delete(testWithTiming.name);
         });
-        // These are the tests from _allTestNames_ that did not have timing data in the junit summary.
-        // We'll estimate their time using the median time from the tests in the summary.
-        remainingTests.forEach(name => {
-            const bestList = this.lists[this.chooseBestList()];
-            DefaultLogger.debug(`"${name}" was not found in the timing data.`);
-            bestList.list.add(name);
-            bestList.caseTimeTotal += medianTime;
-        });
-        if (remainingTests.size > 0) {
-            DefaultLogger.debug(`Tests that were not found in the summary have been assigned the media time ${Math.floor(medianTime)}s`);
-        }
     }
     estimatedDuration() {
         if (this.lists === undefined) {
@@ -5514,7 +5512,7 @@ class JUnitStrategy {
             this.precomputeTestLists();
         }
         // Return true if the list at _index_ contains the test name
-        return line.startsWith("Test") && this.lists[this.index].list.has(line);
+        return this.lists[this.index].list.has(line);
     }
 }
 
@@ -5524,8 +5522,8 @@ class NaiveStrategy {
         this.total = total;
         this.index = index;
     }
-    listFilterFunc(line, testIndex) {
-        return line.startsWith("Test") && testIndex % this.total === this.index;
+    listFilterFunc(_, testIndex) {
+        return testIndex % this.total === this.index;
     }
 }
 
@@ -5583,13 +5581,13 @@ class GoTestLister {
             if (cmd.status != 0) {
                 throw new Error(`go test failed (exit code ${cmd.status}) The error output was:\n\n${cmd.stderr}\n\n${cmd.stdout}`);
             }
-            return cmd.stdout.split("\n");
+            return cmd.stdout.split("\n").filter(line => line.startsWith("Test"));
         });
     }
     outputTestListForRunArg() {
         return __awaiter(this, void 0, void 0, function* () {
             const allTests = yield this.listTests();
-            let testsForIndex = [];
+            let testsForIndex = null;
             try {
                 if (this.opts.junitSummary) {
                     const strategy = new JUnitStrategy(this.opts.total, this.opts.index, this.opts.junitSummary, allTests);
@@ -5602,6 +5600,8 @@ class GoTestLister {
             }
             catch (error) {
                 DefaultLogger.warning(`Failed to use junit splitting strategy (falling back to naive strategy): ${error}`);
+            }
+            if (testsForIndex === null) {
                 const fallbackStrategy = new NaiveStrategy(this.opts.total, this.opts.index);
                 testsForIndex = allTests.filter(fallbackStrategy.listFilterFunc.bind(fallbackStrategy));
             }
