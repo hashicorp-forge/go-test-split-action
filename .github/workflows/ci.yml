@@ -19,11 +19,23 @@ jobs:
           node-version: 16
           cache: npm
 
+      - name: Setup Copywrite
+        uses: hashicorp/setup-copywrite@v1.0.0
+
+      - name: Check Header Compliance
+        run: copywrite headers --plan
+
       - name: npm ci
         run: npm ci
 
       - name: Format Check
         run: npm run format-check
+
+      - name: Verify
+        run: |
+          npm run build
+          # Fail if "npm run build" generated new changes in dist
+          git update-index --refresh dist/* && git diff-index --quiet HEAD dist
 
       - name: Test
         run: npm run test

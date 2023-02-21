@@ -1,8 +1,13 @@
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 import * as core from "@actions/core";
+import * as io from "@actions/io";
+import {configure} from "./action";
 
-import {setupGoTestLister} from "./go-test";
-
-describe("outputTestList", () => {
+describe("action output", () => {
   let inputSpy: jest.SpyInstance;
   let outputSpy: jest.SpyInstance;
 
@@ -34,12 +39,14 @@ describe("outputTestList", () => {
   });
 
   it("lists all tests for 0 of 1", async () => {
+    expect.assertions(1);
+
     inputs.total = "1";
     inputs.index = "0";
 
-    await setupGoTestLister(exampleAppEnv)();
+    const lister = configure(await io.which("go"), exampleAppEnv);
 
-    expect(outputs["run"]).toStrictEqual(
+    expect(await lister.outputTestListForRunArg()).toStrictEqual(
       "^(?:TestExample0|TestExample1|TestExample2|TestExample3|TestExample4)$"
     );
   });
@@ -48,56 +55,62 @@ describe("outputTestList", () => {
     inputs.total = "5";
     inputs.index = "0";
 
-    await setupGoTestLister(exampleAppEnv)();
+    const lister = configure(await io.which("go"), exampleAppEnv);
 
-    expect(outputs["run"]).toStrictEqual("^(?:TestExample0)$");
+    expect(await lister.outputTestListForRunArg()).toStrictEqual(
+      "^(?:TestExample0)$"
+    );
   });
 
   it("lists first, fourth test for 0 of 3", async () => {
     inputs.total = "3";
     inputs.index = "0";
 
-    await setupGoTestLister(exampleAppEnv)();
+    const lister = configure(await io.which("go"), exampleAppEnv);
 
-    expect(outputs["run"]).toStrictEqual("^(?:TestExample0|TestExample3)$");
+    expect(await lister.outputTestListForRunArg()).toStrictEqual(
+      "^(?:TestExample0|TestExample3)$"
+    );
   });
 
   it("lists second, fifth test for 1 of 3", async () => {
     inputs.total = "3";
     inputs.index = "1";
 
-    await setupGoTestLister(exampleAppEnv)();
+    const lister = configure(await io.which("go"), exampleAppEnv);
 
-    expect(outputs["run"]).toStrictEqual("^(?:TestExample1|TestExample4)$");
+    expect(await lister.outputTestListForRunArg()).toStrictEqual(
+      "^(?:TestExample1|TestExample4)$"
+    );
   });
 
   it("lists third test for 2 of 3", async () => {
     inputs.total = "3";
     inputs.index = "2";
 
-    await setupGoTestLister(exampleAppEnv)();
+    const lister = configure(await io.which("go"), exampleAppEnv);
 
-    expect(outputs["run"]).toStrictEqual("^(?:TestExample2)$");
+    expect(await lister.outputTestListForRunArg()).toStrictEqual(
+      "^(?:TestExample2)$"
+    );
   });
 
   it("throws range error for invalid index", async () => {
     inputs.total = "3";
     inputs.index = "3";
 
-    expect(async () => {
-      await setupGoTestLister(exampleAppEnv)();
-    }).rejects.toThrow(
-      "Slice index out of range: Requested index 3 of 3 total slices"
-    );
+    expect(() => {
+      configure("go", exampleAppEnv);
+    }).toThrow("Slice index out of range: Requested index 3 of 3 total slices");
   });
 
   it("return unexpected input error for invalid total", async () => {
     inputs.total = "zombie";
     inputs.index = "";
 
-    expect(async () => {
-      await setupGoTestLister(exampleAppEnv)();
-    }).rejects.toThrow('Unexpected input: index "" of "zombie" total');
+    expect(() => {
+      configure("go", exampleAppEnv);
+    }).toThrow('Unexpected input: index "" of "zombie" total');
   });
 
   it("customizes test list pattern using list input", async () => {
@@ -105,8 +118,9 @@ describe("outputTestList", () => {
     inputs.index = "0";
     inputs.list = "Example[2,3]";
 
-    await setupGoTestLister(exampleAppEnv)();
-
-    expect(outputs["run"]).toStrictEqual("^(?:TestExample2|TestExample3)$");
+    const lister = configure(await io.which("go"), exampleAppEnv);
+    expect(await lister.outputTestListForRunArg()).toStrictEqual(
+      "^(?:TestExample2|TestExample3)$"
+    );
   });
 });
