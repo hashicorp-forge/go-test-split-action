@@ -5420,10 +5420,14 @@ var external_fs_ = __nccwpck_require__(7147);
 // EXTERNAL MODULE: ./node_modules/fast-xml-parser/src/fxp.js
 var fxp = __nccwpck_require__(2603);
 ;// CONCATENATED MODULE: ./src/strategies/junit.ts
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 
 
 
-// JUnitStrategy filters tests to a node index informed by the timing in a junit test
+// JUnitStrategy filters tests to a slice index informed by the timing in a junit test
 // summary XML file. The filter is only guaranteed to work if used on a list that is
 // identical to the one specified by the allTestNames parameter.
 class JUnitStrategy {
@@ -5433,7 +5437,7 @@ class JUnitStrategy {
         this.allTestNames = allTestNames;
         this.junitSummaryPath = junitSummaryPath;
     }
-    // A heap would make this operation faster, but we expect very small _total_ nodes,
+    // A heap would make this operation faster, but we expect very small _total_ slices,
     // since these represent workflow runners.
     chooseBestList() {
         let best = 0;
@@ -5484,8 +5488,13 @@ class JUnitStrategy {
         });
         // Sort all the found timings in reverse order (longest time first)
         timings.sort((a, b) => b.timing - a.timing);
-        DefaultLogger.info(`Found ${timingsFound} testcase timings, which is ${((timingsFound / this.allTestNames.length) *
-            100).toFixed(1)}% of all tests`);
+        if (this.allTestNames.length > 0) {
+            DefaultLogger.info(`Found ${timingsFound} testcase timings, which is ${((timingsFound / this.allTestNames.length) *
+                100).toFixed(1)}% of all tests`);
+        }
+        else {
+            DefaultLogger.warning("No tests were specified");
+        }
         // Initialize a list of lists with exactly _total_ items
         this.lists = [];
         for (let i = 0; i < this.total; i++) {
@@ -5517,6 +5526,10 @@ class JUnitStrategy {
 }
 
 ;// CONCATENATED MODULE: ./src/strategies/naive.ts
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 class NaiveStrategy {
     constructor(total, index) {
         this.total = total;

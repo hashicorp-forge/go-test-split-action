@@ -50,9 +50,11 @@ Use the `packages` input to customize the packages string, and the `list` input 
 
 ### Better Test Balancing using `junit-summary`
 
-A more sophisticated test balancing strategy can be used if you provide a JUnit test summary (XML format), commonly generated using the [gotestsum package](https://github.com/gotestyourself/gotestsum).
+Normally, test splitting is achieved by balancing the quantity of tests across the _total_ slices.
 
-Unfortunately, usually this means combining JUnit output from your newly split test runners and merging those together before utilizing it in the next CI run. Until a more complete composite workflow is developed, you can assemble a workflow that does the following steps to take advantage of this option:
+A more balanced test splitting strategy can be achieved if you provide a JUnit test summary (XML format), commonly generated using the [gotestsum package](https://github.com/gotestyourself/gotestsum).
+
+Usually this means combining JUnit output from your newly split test runners and merging those together before utilizing it in the next CI run. Until a more complete composite workflow is developed, you can assemble a workflow that does the following steps to take advantage of this option, using additional steps that merge, upload, and download the appropriate summary XML. This workflow is likely to need to be customized for your project, and is for illustrative purposes only.
 
 ```yaml
 

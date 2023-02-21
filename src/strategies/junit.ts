@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 import * as fs from "fs";
 import {XMLParser} from "fast-xml-parser";
 import {DefaultLogger as log} from "../logger";
@@ -12,7 +17,7 @@ type TestTiming = {
   timing: number;
 };
 
-// JUnitStrategy filters tests to a node index informed by the timing in a junit test
+// JUnitStrategy filters tests to a slice index informed by the timing in a junit test
 // summary XML file. The filter is only guaranteed to work if used on a list that is
 // identical to the one specified by the allTestNames parameter.
 export default class JUnitStrategy {
@@ -37,7 +42,7 @@ export default class JUnitStrategy {
     this.junitSummaryPath = junitSummaryPath;
   }
 
-  // A heap would make this operation faster, but we expect very small _total_ nodes,
+  // A heap would make this operation faster, but we expect very small _total_ slices,
   // since these represent workflow runners.
   private chooseBestList(): number {
     let best = 0;
@@ -101,12 +106,16 @@ export default class JUnitStrategy {
     // Sort all the found timings in reverse order (longest time first)
     timings.sort((a, b) => b.timing - a.timing);
 
-    log.info(
-      `Found ${timingsFound} testcase timings, which is ${(
-        (timingsFound / this.allTestNames.length) *
-        100
-      ).toFixed(1)}% of all tests`
-    );
+    if (this.allTestNames.length > 0) {
+      log.info(
+        `Found ${timingsFound} testcase timings, which is ${(
+          (timingsFound / this.allTestNames.length) *
+          100
+        ).toFixed(1)}% of all tests`
+      );
+    } else {
+      log.warning("No tests were specified");
+    }
 
     // Initialize a list of lists with exactly _total_ items
     this.lists = [];
