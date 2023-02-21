@@ -4,7 +4,14 @@
  */
 
 import {spawnSync} from "child_process";
+import * as fs from "fs";
 import {DefaultLogger as log} from "./logger";
+import JUnitStrategy from "./strategies/junit";
+import NaiveStrategy from "./strategies/naive";
+
+interface Strategy {
+  listFilterFunc(line: string, testIndex: number): boolean;
+}
 
 export type ListerOptions = {
   total: number;
@@ -13,6 +20,7 @@ export type ListerOptions = {
   list: string;
   flags: string;
   whichGo: string;
+  junitSummary?: string;
   workingDirectory: string;
   env?: NodeJS.ProcessEnv;
 };
@@ -66,20 +74,51 @@ export class GoTestLister {
       );
     }
 
-    return cmd.stdout.split("\n");
+    return cmd.stdout.split("\n").filter(line => line.startsWith("Test"));
   }
 
   public async outputTestListForRunArg(): Promise<string> {
-    const strategyNaive = (line: string, testIndex: number) =>
-      line.startsWith("Test") &&
-      testIndex % this.opts.total === this.opts.index;
+    const allTests = await this.listTests();
+    let testsForIndex: string[] = null;
 
-    const tests = (await this.listTests()).filter(strategyNaive);
+    try {
+      if (this.opts.junitSummary) {
+        const strategy = new JUnitStrategy(
+          this.opts.total,
+          this.opts.index,
+          this.opts.junitSummary,
+          allTests
+        );
+        testsForIndex = allTests.filter(strategy.listFilterFunc.bind(strategy));
+
+        const duration = strategy.estimatedDuration();
+        const minutes = Math.floor(duration / 60);
+        const seconds = Math.ceil(duration - minutes * 60);
+
+        log.info(
+          `This slice has ${testsForIndex.length} tests and is estimated to finish in ${minutes}m ${seconds}s`
+        );
+      }
+    } catch (error) {
+      log.warning(
+        `Failed to use junit splitting strategy (falling back to naive strategy): ${error}`
+      );
+    }
+
+    if (testsForIndex === null) {
+      const fallbackStrategy = new NaiveStrategy(
+        this.opts.total,
+        this.opts.index
+      );
+      testsForIndex = allTests.filter(
+        fallbackStrategy.listFilterFunc.bind(fallbackStrategy)
+      );
+    }
 
     log.debug(
-      `Output populated with these specific tests:\n${tests.join("\n")}`
+      `Output populated with these specific tests:\n${testsForIndex.join("\n")}`
     );
 
-    return this.formatTests(tests);
+    return this.formatTests(testsForIndex);
   }
 }
