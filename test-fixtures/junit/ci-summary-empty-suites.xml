@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+ Copyright (c) HashiCorp, Inc.
+ SPDX-License-Identifier: MPL-2.0
+-->
+
+<testsuites failures="0" errors="0" tests="297" skipped="0">
+  <testsuite tests="0" failures="0" time="0.000000" name="github.com/hashicorp/terraform-provider-tfe" timestamp="2023-02-22T14:04:04Z">
+    <properties>
+      <property name="go.version" value="go1.18.10 linux/amd64"/>
+    </properties>
+  </testsuite>
+  <testsuite tests="106" failures="0" time="494.888000" name="github.com/hashicorp/terraform-provider-tfe/tfe" timestamp="2023-02-22T14:04:04Z">
+    <properties>
+      <property name="go.version" value="go1.18.10 linux/amd64"/>
+    </properties>
+    <testcase classname="github.com/hashicorp/terraform-provider-tfe/tfe" name="Test1" time="0.000000">
+      <skipped message="=== RUN   Test1&amp;#xA;    testing.go:178: Skipping tests for Run Tasks. Set &amp;#39;RUN_TASKS_URL&amp;#39; to enabled this tests.&amp;#xA;--- SKIP: TestAccTFEOrganizationRunTaskDataSource_basic (0.00s)&amp;#xA;"/>
+    </testcase>
+    <testcase classname="github.com/hashicorp/terraform-provider-tfe/tfe" name="Test2" time="9.960000"/>
+  </testsuite>
+  <testsuite tests="0" failures="0" time="0.000000" name="github.com/hashicorp/terraform-provider-tfe/version" timestamp="2023-02-22T14:04:04Z">
+    <properties>
+      <property name="go.version" value="go1.18.10 linux/amd64"/>
+    </properties>
+  </testsuite>
+  <testsuite tests="0" failures="0" time="0.000000" name="github.com/hashicorp/terraform-provider-tfe" timestamp="2023-02-22T14:15:35Z">
+    <properties>
+      <property name="go.version" value="go1.18.10 linux/amd64"/>
+    </properties>
+  </testsuite>
+  <testsuite tests="98" failures="0" time="583.023000" name="github.com/hashicorp/terraform-provider-tfe/tfe" timestamp="2023-02-22T14:15:35Z">
+    <properties>
+      <property name="go.version" value="go1.18.10 linux/amd64"/>
+    </properties>
+    <testcase classname="github.com/hashicorp/terraform-provider-tfe/tfe" name="Test3" time="0.000000">
+      <skipped message="=== RUN   Test3&amp;#xA;    data_source_organization_membership_test.go:43: CI Seeded users are not in the hashicorp org in CI&amp;#xA;--- SKIP: TestAccTFEOrganizationMembershipDataSource_findByName (0.00s)&amp;#xA;"/>
+    </testcase>
+    <testcase classname="github.com/hashicorp/terraform-provider-tfe/tfe" name="Test4" time="6.220000"/>
+  </testsuite>
+  <testsuite tests="0" failures="0" time="0.000000" name="github.com/hashicorp/terraform-provider-tfe/version" timestamp="2023-02-22T14:04:19Z">
+    <properties>
+      <property name="go.version" value="go1.18.10 linux/amd64"/>
+    </properties>
+  </testsuite>
+</testsuites>

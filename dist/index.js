@@ -5451,16 +5451,22 @@ class JUnitStrategy {
         return best;
     }
     precomputeTestLists() {
-        var _a, _b, _c;
+        var _a, _b;
         const data = external_fs_.readFileSync(this.junitSummaryPath);
         const parser = new fxp.XMLParser({
             ignoreAttributes: false,
             attributeNamePrefix: "@",
         });
         const junitData = parser.parse(data, true);
-        const cases = Array.isArray((_a = junitData === null || junitData === void 0 ? void 0 : junitData.testsuites) === null || _a === void 0 ? void 0 : _a.testsuite)
-            ? Array.from((_b = junitData === null || junitData === void 0 ? void 0 : junitData.testsuites) === null || _b === void 0 ? void 0 : _b.testsuite).flatMap((suite) => suite.testcase)
-            : Array.from((_c = junitData === null || junitData === void 0 ? void 0 : junitData.testsuites) === null || _c === void 0 ? void 0 : _c.testsuite.testcase);
+        if (!((_a = junitData === null || junitData === void 0 ? void 0 : junitData.testsuites) === null || _a === void 0 ? void 0 : _a.testsuite)) {
+            throw new Error("junit-summary is invalid. Expected testsuites/testsuite elements");
+        }
+        // The data structure that comes out of XMLParser can take many forms, depending on the
+        // number of child elements in each object. This enforces each child into an array and flattens
+        // out all the testcase entities. See `/test-fixtures/junit` for examples.
+        const cases = [(_b = junitData === null || junitData === void 0 ? void 0 : junitData.testsuites) === null || _b === void 0 ? void 0 : _b.testsuite]
+            .flat()
+            .flatMap((suite) => suite.testcase ? [suite.testcase].flat().flatMap((tc) => tc) : []);
         let casesByName = {};
         cases.forEach(c => {
             casesByName[c["@name"]] = c;

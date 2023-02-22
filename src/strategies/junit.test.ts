@@ -56,6 +56,26 @@ describe("junit splitting strategy", () => {
     });
   });
 
+  describe("when empty suites are present", () => {
+    const suite =
+      process.cwd() + "/test-fixtures/junit/ci-summary-empty-suites.xml";
+
+    const tests = [
+      // Timings according to fixture:
+      "Test1", // 0.00
+      "Test2", // 9.96
+      "Test3", // 0.00
+      "Test4", // 6.22
+    ];
+
+    it("can parse testcases", () => {
+      const strategy = new JUnitStrategy(1, 0, suite, tests);
+      expect<string[]>(
+        tests.filter(strategy.listFilterFunc.bind(strategy))
+      ).toStrictEqual(tests);
+    });
+  });
+
   describe("when multiple suites are present", () => {
     const suite =
       process.cwd() + "/test-fixtures/junit/ci-summary-multiple-suites.xml";
