@@ -56,8 +56,9 @@ A more balanced test splitting strategy can be achieved if you provide a JUnit t
 
 Usually this means combining JUnit output from your newly split test runners and merging those together before utilizing it in the next CI run. Until a more complete composite workflow is developed, you can assemble a workflow that does the following steps to take advantage of this option, using additional steps that merge, upload, and download the appropriate summary XML. This workflow is likely to need to be customized for your project, and is for illustrative purposes only.
 
-```yaml
+It's likely to take at least 2 push or PR events to see the actual timing improvement: 1. To succeed in uploading the report using the naive ordering and 2. To succeed in downloading and using the report.
 
+```yaml
 name: CI Tests
 on:
   push:
@@ -90,7 +91,9 @@ jobs:
           workflow_conclusion: success
           name: junit-test-summary
           if_no_artifact_found: warn
-          branch: main # Comment this out until you have uploaded this artifact from a main branch workflow
+          # Uncomment the next line before pushing to main branch, that way all branches can
+          # benefit from timing data once it's established there.
+          # branch: main
 
       - name: Split integration tests
         id: test_split
