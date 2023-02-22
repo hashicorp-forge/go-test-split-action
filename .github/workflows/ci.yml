@@ -19,12 +19,6 @@ jobs:
           node-version: 16
           cache: npm
 
-      - name: Setup Copywrite
-        uses: hashicorp/setup-copywrite@v1.0.0
-
-      - name: Check Header Compliance
-        run: copywrite headers --plan
-
       - name: npm ci
         run: npm ci
 

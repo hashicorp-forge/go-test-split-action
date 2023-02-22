@@ -1,4 +1,9 @@
 <?xml version="1.0"?>
+<!--
+ Copyright (c) HashiCorp, Inc.
+ SPDX-License-Identifier: MPL-2.0
+-->
+
 <testsuites failures="0" errors="0" tests="297" skipped="0">
   <testsuite tests="0" failures="0" time="0.000000" name="github.com/hashicorp/terraform-provider-tfe" timestamp="2023-02-22T14:04:04Z">
     <properties>
