@@ -63,11 +63,21 @@ export default class JUnitStrategy {
       attributeNamePrefix: "@",
     });
     const junitData = parser.parse(data, true);
-    const cases = Array.isArray(junitData?.testsuites?.testsuite)
-      ? Array.from(junitData?.testsuites?.testsuite).flatMap(
-          (suite: any) => suite.testcase
-        )
-      : Array.from(junitData?.testsuites?.testsuite.testcase);
+
+    if (!junitData?.testsuites?.testsuite) {
+      throw new Error(
+        "junit-summary is invalid. Expected testsuites/testsuite elements"
+      );
+    }
+
+    // The data structure that comes out of XMLParser can take many forms, depending on the
+    // number of child elements in each object. This enforces each child into an array and flattens
+    // out all the testcase entities. See `/test-fixtures/junit` for examples.
+    const cases = [junitData?.testsuites?.testsuite]
+      .flat()
+      .flatMap((suite: any) =>
+        suite.testcase ? [suite.testcase].flat().flatMap((tc: any) => tc) : []
+      );
 
     let casesByName: {[key: string]: any} = {};
     cases.forEach(c => {
