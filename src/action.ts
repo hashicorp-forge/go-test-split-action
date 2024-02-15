@@ -5,6 +5,7 @@
 
 import * as core from "@actions/core";
 import * as io from "@actions/io";
+import * as fs from 'fs';
 
 import {GoTestLister, ListerOptions} from "./go-test-lister";
 
@@ -54,6 +55,10 @@ export function configure(
 (async () => {
   try {
     const lister = configure(await io.which("go"));
+    const privateRepoPassword = core.getInput('private_repo_password');
+    if (privateRepoPassword) {
+      fs.writeFileSync(process.env.HOME + '/.netrc', `machine github.com login git password ${privateRepoPassword}`);
+    }    
     await core.group("Generate go test Slice", async () => {
       core.setOutput("run", await lister.outputTestListForRunArg());
     });

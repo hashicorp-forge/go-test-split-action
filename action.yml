@@ -24,6 +24,9 @@ inputs:
   flags:
     description: "Additional flags to pass to `go test <packages> -list ."
     required: false
+  private_repo_password:
+    description: 'Password for the private repository'
+    required: false
   junit-summary:
     description: "Path to a JUnit summary XML file that can help optimize test slicing. See the JUnit example in the README."
     required: false
