@@ -5489,6 +5489,8 @@ __nccwpck_require__.d(__webpack_exports__, {
 var core = __nccwpck_require__(2186);
 // EXTERNAL MODULE: ./node_modules/@actions/io/lib/io.js
 var io = __nccwpck_require__(7436);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __nccwpck_require__(1017);
 // EXTERNAL MODULE: external "child_process"
 var external_child_process_ = __nccwpck_require__(2081);
 ;// CONCATENATED MODULE: ./src/logger.ts
@@ -5731,6 +5733,7 @@ var action_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _a
 
 
 
+
 function configure(whichGo, env) {
     let opts = {
         // The go binary-- in GHA, this should be the result of await io.which("go")
@@ -5745,7 +5748,7 @@ function configure(whichGo, env) {
         // JUnit option
         junitSummary: core.getInput("junit-summary"),
         // Env
-        workingDirectory: process.env.GITHUB_WORKSPACE,
+        workingDirectory: external_path_.join(process.env.GITHUB_WORKSPACE, core.getInput("working-directory")),
         env,
     };
     // Input validation

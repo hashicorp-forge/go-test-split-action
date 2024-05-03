@@ -48,6 +48,9 @@ List tests using go tooling by executing `go test ./... -list .` in the `GITHUB_
 
 Use the `packages` input to customize the packages string, and the `list` input to customize the list pattern. Pass additional test flags using `flags` (See action.yml for details)
 
+Use the `working-directory` input to change the directory from which
+tests are listed.
+
 ### Better Test Balancing using `junit-summary`
 
 Normally, test splitting is achieved by balancing the quantity of tests across the _total_ slices.

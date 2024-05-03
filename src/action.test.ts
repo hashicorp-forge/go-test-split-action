@@ -28,6 +28,9 @@ describe("action output", () => {
 
     outputSpy = jest.spyOn(core, "setOutput");
     outputSpy.mockImplementation((name, value) => (outputs[name] = value));
+
+    process.env.GITHUB_WORKSPACE = process.cwd() + "/test-fixtures";
+    inputs["working-directory"] = "example-app";
   });
 
   afterEach(() => {
