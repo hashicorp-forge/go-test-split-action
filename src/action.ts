@@ -5,6 +5,7 @@
 
 import * as core from "@actions/core";
 import * as io from "@actions/io";
+import * as path from "path";
 
 import {GoTestLister, ListerOptions} from "./go-test-lister";
 
@@ -29,8 +30,7 @@ export function configure(
     junitSummary: core.getInput("junit-summary"),
 
     // Env
-    workingDirectory:
-      core.getInput("working-directory") || process.env.GITHUB_WORKSPACE,
+    workingDirectory: path.join(process.env.GITHUB_WORKSPACE, core.getInput("working-directory")),
     env,
   };
 
