@@ -5745,7 +5745,7 @@ function configure(whichGo, env) {
         // JUnit option
         junitSummary: core.getInput("junit-summary"),
         // Env
-        workingDirectory: process.env.GITHUB_WORKSPACE,
+        workingDirectory: core.getInput("working-directory") || process.env.GITHUB_WORKSPACE,
         env,
     };
     // Input validation
