@@ -30,7 +30,10 @@ export function configure(
     junitSummary: core.getInput("junit-summary"),
 
     // Env
-    workingDirectory: path.join(process.env.GITHUB_WORKSPACE, core.getInput("working-directory")),
+    workingDirectory: path.join(
+      process.env.GITHUB_WORKSPACE,
+      core.getInput("working-directory")
+    ),
     env,
   };
 
