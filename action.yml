@@ -4,7 +4,7 @@ description: >
   Given some splitting parameters (total slices and slice index), lists a subset of tests
   suitable for passing into go test -run.
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
 inputs:
   total:
