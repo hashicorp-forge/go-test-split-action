@@ -1,0 +1,4 @@
+## v2.0.0
+
+* This is primarily a maintenance release, with node20 being used throughout the action and the action's own CI. All dependencies have been bumped to their latest versions.
+* Adds optional `working-directory` input to specify the directory where go test is run by @aaron-lane #15 
