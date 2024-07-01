@@ -50,7 +50,7 @@ describe("action output", () => {
     const lister = configure(await io.which("go"), exampleAppEnv);
 
     expect(await lister.outputTestListForRunArg()).toStrictEqual(
-      "^(?:TestExample0|TestExample1|TestExample2|TestExample3|TestExample4)$"
+      "^(?:TestExample0|TestExample1|TestExample2|TestExample3|TestExample4)$",
     );
   });
 
@@ -61,7 +61,7 @@ describe("action output", () => {
     const lister = configure(await io.which("go"), exampleAppEnv);
 
     expect(await lister.outputTestListForRunArg()).toStrictEqual(
-      "^(?:TestExample0)$"
+      "^(?:TestExample0)$",
     );
   });
 
@@ -72,7 +72,7 @@ describe("action output", () => {
     const lister = configure(await io.which("go"), exampleAppEnv);
 
     expect(await lister.outputTestListForRunArg()).toStrictEqual(
-      "^(?:TestExample0|TestExample3)$"
+      "^(?:TestExample0|TestExample3)$",
     );
   });
 
@@ -83,7 +83,7 @@ describe("action output", () => {
     const lister = configure(await io.which("go"), exampleAppEnv);
 
     expect(await lister.outputTestListForRunArg()).toStrictEqual(
-      "^(?:TestExample1|TestExample4)$"
+      "^(?:TestExample1|TestExample4)$",
     );
   });
 
@@ -94,7 +94,7 @@ describe("action output", () => {
     const lister = configure(await io.which("go"), exampleAppEnv);
 
     expect(await lister.outputTestListForRunArg()).toStrictEqual(
-      "^(?:TestExample2)$"
+      "^(?:TestExample2)$",
     );
   });
 
@@ -123,7 +123,7 @@ describe("action output", () => {
 
     const lister = configure(await io.which("go"), exampleAppEnv);
     expect(await lister.outputTestListForRunArg()).toStrictEqual(
-      "^(?:TestExample2|TestExample3)$"
+      "^(?:TestExample2|TestExample3)$",
     );
   });
 });

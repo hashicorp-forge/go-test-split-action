@@ -11,7 +11,7 @@ import {GoTestLister, ListerOptions} from "./go-test-lister";
 
 export function configure(
   whichGo: string,
-  env?: NodeJS.ProcessEnv
+  env?: NodeJS.ProcessEnv,
 ): GoTestLister {
   let opts: ListerOptions = {
     // The go binary-- in GHA, this should be the result of await io.which("go")
@@ -32,7 +32,7 @@ export function configure(
     // Env
     workingDirectory: path.join(
       process.env.GITHUB_WORKSPACE,
-      core.getInput("working-directory")
+      core.getInput("working-directory"),
     ),
     env,
   };
@@ -41,14 +41,14 @@ export function configure(
   if (Number.isNaN(opts.total) || Number.isNaN(opts.index)) {
     throw new Error(
       `Unexpected input: index "${core.getInput("index")}" of "${core.getInput(
-        "total"
-      )}" total`
+        "total",
+      )}" total`,
     );
   }
 
   if (opts.index > opts.total - 1 || opts.index < 0) {
     throw new Error(
-      `Slice index out of range: Requested index ${opts.index} of ${opts.total} total slices`
+      `Slice index out of range: Requested index ${opts.index} of ${opts.total} total slices`,
     );
   }
 

@@ -56,7 +56,7 @@ export class GoTestLister {
     ];
 
     log.info(
-      `Listing go tests with the following command: ${g} ${args.join(" ")}`
+      `Listing go tests with the following command: ${g} ${args.join(" ")}`,
     );
     const cmd = spawnSync(g, args, {
       cwd: this.opts.workingDirectory,
@@ -70,7 +70,7 @@ export class GoTestLister {
 
     if (cmd.status != 0) {
       throw new Error(
-        `go test failed (exit code ${cmd.status}) The error output was:\n\n${cmd.stderr}\n\n${cmd.stdout}`
+        `go test failed (exit code ${cmd.status}) The error output was:\n\n${cmd.stderr}\n\n${cmd.stdout}`,
       );
     }
 
@@ -87,7 +87,7 @@ export class GoTestLister {
           this.opts.total,
           this.opts.index,
           this.opts.junitSummary,
-          allTests
+          allTests,
         );
         testsForIndex = allTests.filter(strategy.listFilterFunc.bind(strategy));
 
@@ -96,27 +96,27 @@ export class GoTestLister {
         const seconds = Math.ceil(duration - minutes * 60);
 
         log.info(
-          `This slice has ${testsForIndex.length} tests and is estimated to finish in ${minutes}m ${seconds}s`
+          `This slice has ${testsForIndex.length} tests and is estimated to finish in ${minutes}m ${seconds}s`,
         );
       }
     } catch (error) {
       log.warning(
-        `Failed to use junit splitting strategy (falling back to naive strategy): ${error}`
+        `Failed to use junit splitting strategy (falling back to naive strategy): ${error}`,
       );
     }
 
     if (testsForIndex === null) {
       const fallbackStrategy = new NaiveStrategy(
         this.opts.total,
-        this.opts.index
+        this.opts.index,
       );
       testsForIndex = allTests.filter(
-        fallbackStrategy.listFilterFunc.bind(fallbackStrategy)
+        fallbackStrategy.listFilterFunc.bind(fallbackStrategy),
       );
     }
 
     log.debug(
-      `Output populated with these specific tests:\n${testsForIndex.join("\n")}`
+      `Output populated with these specific tests:\n${testsForIndex.join("\n")}`,
     );
 
     return this.formatTests(testsForIndex);

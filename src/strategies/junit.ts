@@ -34,7 +34,7 @@ export default class JUnitStrategy {
     total: number,
     index: number,
     junitSummaryPath: string,
-    allTestNames: string[]
+    allTestNames: string[],
   ) {
     this.total = total;
     this.index = index;
@@ -66,7 +66,7 @@ export default class JUnitStrategy {
 
     if (!junitData?.testsuites?.testsuite) {
       throw new Error(
-        "junit-summary is invalid. Expected testsuites/testsuite elements"
+        "junit-summary is invalid. Expected testsuites/testsuite elements",
       );
     }
 
@@ -76,7 +76,7 @@ export default class JUnitStrategy {
     const cases = [junitData?.testsuites?.testsuite]
       .flat()
       .flatMap((suite: any) =>
-        suite.testcase ? [suite.testcase].flat().flatMap((tc: any) => tc) : []
+        suite.testcase ? [suite.testcase].flat().flatMap((tc: any) => tc) : [],
       );
 
     let casesByName: {[key: string]: any} = {};
@@ -104,7 +104,7 @@ export default class JUnitStrategy {
 
       const averageTiming = index > 0 ? totalTiming / (index + 1) : 1.0;
       log.debug(
-        `Could not find timing data for ${name}, substituting default value of ${averageTiming}s (the average so far)`
+        `Could not find timing data for ${name}, substituting default value of ${averageTiming}s (the average so far)`,
       );
 
       return {
@@ -121,7 +121,7 @@ export default class JUnitStrategy {
         `Found ${timingsFound} testcase timings, which is ${(
           (timingsFound / this.allTestNames.length) *
           100
-        ).toFixed(1)}% of all tests`
+        ).toFixed(1)}% of all tests`,
       );
     } else {
       log.warning("No tests were specified");
@@ -149,7 +149,7 @@ export default class JUnitStrategy {
           bestList.caseTimeTotal
         } estimated runtime (previously ${
           bestList.caseTimeTotal - testWithTiming.timing
-        })`
+        })`,
       );
     });
   }
