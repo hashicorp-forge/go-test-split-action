@@ -31,7 +31,7 @@ strategy:
 steps:
   - name: Generate go test Slice
     id: test_split
-    uses: hashicorp-forge/go-test-split-action@v1
+    uses: hashicorp-forge/go-test-split-action@v2.0.0
     with:
       total: ${{ matrix.parallel }}
       index: ${{ matrix.index }}
@@ -100,7 +100,7 @@ jobs:
 
       - name: Split integration tests
         id: test_split
-        uses: hashicorp-forge/go-test-split-action@v1
+        uses: hashicorp-forge/go-test-split-action@v2.0.0
         with:
           index: ${{ matrix.index }}
           total: ${{ matrix.parallel }}
