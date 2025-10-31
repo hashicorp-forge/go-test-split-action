@@ -94,6 +94,8 @@ jobs:
           workflow_conclusion: success
           name: junit-test-summary
           if_no_artifact_found: warn
+          use_unzip: true
+
           # Uncomment the next line before pushing to main branch, that way all branches can
           # benefit from timing data once it's established there.
           # branch: main
