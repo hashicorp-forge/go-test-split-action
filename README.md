@@ -31,7 +31,7 @@ strategy:
 steps:
   - name: Generate go test Slice
     id: test_split
-    uses: hashicorp-forge/go-test-split-action@v1
+    uses: hashicorp-forge/go-test-split-action@v2.0.0
     with:
       total: ${{ matrix.parallel }}
       index: ${{ matrix.index }}
@@ -79,28 +79,30 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
 
       - name: Install gotestsum
         run: go install gotest.tools/gotestsum@latest
 
       - name: Download JUnit Summary from Previous Workflow
         id: download-artifact
-        uses: dawidd6/action-download-artifact@v4
+        uses: dawidd6/action-download-artifact@v11
         with:
           workflow_conclusion: success
           name: junit-test-summary
           if_no_artifact_found: warn
+          use_unzip: true
+
           # Uncomment the next line before pushing to main branch, that way all branches can
           # benefit from timing data once it's established there.
           # branch: main
 
       - name: Split integration tests
         id: test_split
-        uses: hashicorp-forge/go-test-split-action@v1
+        uses: hashicorp-forge/go-test-split-action@v2.0.0
         with:
           index: ${{ matrix.index }}
           total: ${{ matrix.parallel }}
@@ -122,12 +124,12 @@ jobs:
     needs: [ tests ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
 
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
 
       - name: Install junit-report-merger
         run: npm install -g junit-report-merger
