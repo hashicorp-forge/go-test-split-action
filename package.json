@@ -21,9 +21,9 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "fast-xml-parser": "^5.5.10",
     "@actions/core": "^3.0.0",
-    "@actions/exec": "^1.1.1"
+    "@actions/io": "^3.0.2",
+    "fast-xml-parser": "^5.5.10"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",
