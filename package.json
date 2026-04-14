@@ -9,7 +9,8 @@
     "format": "prettier --write '**/*.ts'",
     "format-check": "prettier --check '**/*.ts'",
     "test": "jest",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "patch-package"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "husky": "^9.1.7",
     "prettier": "^3.8.1",
     "jest": "^30.3.0",
+    "patch-package": "^8.0.0",
     "ts-jest": "^29.4.6",
     "typescript": "^5.9.3"
   }

@@ -51,6 +51,28 @@ Use the `packages` input to customize the packages string, and the `list` input 
 Use the `working-directory` input to change the directory from which
 tests are listed.
 
+### Dependency Patch Workflow for CodeQL incomplete-sanitization
+
+This repository uses `patch-package` to persist a transitive dependency fix for
+`undici` during install, so rebuilding `dist/index.js` keeps the same behavior
+without manual edits in `dist`.
+
+Why this exists:
+- CodeQL rule `js/incomplete-sanitization` flags undici's multipart escape helper, [details here](https://github.com/hashicorp-forge/go-test-split-action/security/code-scanning/15).
+- The affected code is in `undici` (pulled transitively through `@actions/http-client`).
+
+What to check to know this is fixed upstream:
+- Dependency to watch: `undici`.
+- File to inspect in the published package: `lib/web/fetch/body.js` (or equivalent in newer major versions).
+- Look for the form-data `escape` helper and confirm it escapes backslashes,
+  for example by including `.replace(/\\/g, '%5C')` or equivalent logic.
+
+When upstream is fixed:
+1. Update dependencies and lockfile so the fixed `undici` version is selected.
+2. Remove `patches/undici+*.patch`.
+3. Remove `postinstall: patch-package` from `package.json`.
+4. Rebuild `dist/index.js` and request a code scanning rerun.
+
 ### Better Test Balancing using `junit-summary`
 
 Normally, test splitting is achieved by balancing the quantity of tests across the _total_ slices.
