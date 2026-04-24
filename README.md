@@ -1,5 +1,6 @@
 # go-test-split-action
 
+test 
 Given some splitting parameters (`total` slices and slice `index`), this action generates a list of tests that is suitable for passing into `go test -run`
 
 ## Inputs
