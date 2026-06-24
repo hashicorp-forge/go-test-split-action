@@ -1,3 +1,7 @@
+## v2.0.4
+
+* This maintenance release contains security fixes and dependency updates.
+
 ## v2.0.0
 
 * This is primarily a maintenance release, with node20 being used throughout the action and the action's own CI. All dependencies have been bumped to their latest versions.
