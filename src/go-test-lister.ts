@@ -79,7 +79,7 @@ export class GoTestLister {
 
   public async outputTestListForRunArg(): Promise<string> {
     const allTests = await this.listTests();
-    let testsForIndex: string[] = null;
+    let testsForIndex: string[] | null = null;
 
     try {
       if (this.opts.junitSummary) {

@@ -28,7 +28,7 @@ export default class JUnitStrategy {
   private allTestNames: string[];
 
   // The precomputed lists of tests, containing _total_ items
-  private lists: TestList[];
+  private lists: TestList[] | null;
 
   constructor(
     total: number,
@@ -40,11 +40,16 @@ export default class JUnitStrategy {
     this.index = index;
     this.allTestNames = allTestNames;
     this.junitSummaryPath = junitSummaryPath;
+    this.lists = null;
   }
 
   // A heap would make this operation faster, but we expect very small _total_ slices,
   // since these represent workflow runners.
   private chooseBestList(): number {
+    if (this.lists === null) {
+      return -1;
+    }
+
     let best = 0;
     let bestTiming = Number.MAX_VALUE;
     for (let i = 0; i < this.lists.length; i++) {
@@ -136,6 +141,10 @@ export default class JUnitStrategy {
     // Add each test to the list that has the smallest total timing sum. Add the new timing
     // (or a placeholder value of the median time for new tests) to the running total of that list.
     timings.forEach(testWithTiming => {
+      if (this.lists === null) {
+        return;
+      }
+
       const bestIndex = this.chooseBestList();
       const bestList = this.lists[bestIndex];
 
@@ -155,16 +164,24 @@ export default class JUnitStrategy {
   }
 
   public estimatedDuration(): number {
-    if (this.lists === undefined) {
+    if (this.lists === null) {
       this.precomputeTestLists();
+    }
+
+    if (this.lists === null) {
+      return 0;
     }
 
     return this.lists[this.index].caseTimeTotal;
   }
 
   public listFilterFunc(line: string): boolean {
-    if (this.lists === undefined) {
+    if (this.lists === null) {
       this.precomputeTestLists();
+    }
+
+    if (this.lists === null) {
+      return false;
     }
 
     // Return true if the list at _index_ contains the test name

@@ -38216,10 +38216,14 @@ class JUnitStrategy {
         this.index = index;
         this.allTestNames = allTestNames;
         this.junitSummaryPath = junitSummaryPath;
+        this.lists = null;
     }
     // A heap would make this operation faster, but we expect very small _total_ slices,
     // since these represent workflow runners.
     chooseBestList() {
+        if (this.lists === null) {
+            return -1;
+        }
         let best = 0;
         let bestTiming = Number.MAX_VALUE;
         for (let i = 0; i < this.lists.length; i++) {
@@ -38289,6 +38293,9 @@ class JUnitStrategy {
         // Add each test to the list that has the smallest total timing sum. Add the new timing
         // (or a placeholder value of the median time for new tests) to the running total of that list.
         timings.forEach(testWithTiming => {
+            if (this.lists === null) {
+                return;
+            }
             const bestIndex = this.chooseBestList();
             const bestList = this.lists[bestIndex];
             bestList.list.add(testWithTiming.name);
@@ -38297,14 +38304,20 @@ class JUnitStrategy {
         });
     }
     estimatedDuration() {
-        if (this.lists === undefined) {
+        if (this.lists === null) {
             this.precomputeTestLists();
+        }
+        if (this.lists === null) {
+            return 0;
         }
         return this.lists[this.index].caseTimeTotal;
     }
     listFilterFunc(line) {
-        if (this.lists === undefined) {
+        if (this.lists === null) {
             this.precomputeTestLists();
+        }
+        if (this.lists === null) {
+            return false;
         }
         // Return true if the list at _index_ contains the test name
         return this.lists[this.index].list.has(line);
@@ -38442,7 +38455,7 @@ function configure(whichGo, env) {
         // JUnit option
         junitSummary: getInput("junit-summary"),
         // Env
-        workingDirectory: external_path_namespaceObject.join(process.env.GITHUB_WORKSPACE, getInput("working-directory")),
+        workingDirectory: external_path_namespaceObject.join(process.env.GITHUB_WORKSPACE || "", getInput("working-directory")),
         env,
     };
     // Input validation

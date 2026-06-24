@@ -31,7 +31,7 @@ export function configure(
 
     // Env
     workingDirectory: path.join(
-      process.env.GITHUB_WORKSPACE,
+      process.env.GITHUB_WORKSPACE || "",
       core.getInput("working-directory"),
     ),
     env,
@@ -61,7 +61,7 @@ export function configure(
     await core.group("Generate go test Slice", async () => {
       core.setOutput("run", await lister.outputTestListForRunArg());
     });
-  } catch (error) {
+  } catch (error: any) {
     core.setFailed(error.message);
   }
 })();
