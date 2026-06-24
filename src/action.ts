@@ -7,7 +7,7 @@ import * as core from "@actions/core";
 import * as io from "@actions/io";
 import * as path from "path";
 
-import { GoTestLister, ListerOptions } from "./go-test-lister";
+import {GoTestLister, ListerOptions} from "./go-test-lister";
 
 export function configure(
   whichGo: string,

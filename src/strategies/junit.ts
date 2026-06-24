@@ -4,8 +4,8 @@
  */
 
 import * as fs from "fs";
-import { XMLParser } from "fast-xml-parser";
-import { DefaultLogger as log } from "../logger";
+import {XMLParser} from "fast-xml-parser";
+import {DefaultLogger as log} from "../logger";
 
 type TestList = {
   list: Set<string>;
@@ -84,7 +84,7 @@ export default class JUnitStrategy {
         suite.testcase ? [suite.testcase].flat().flatMap((tc: any) => tc) : [],
       );
 
-    let casesByName: { [key: string]: any } = {};
+    let casesByName: {[key: string]: any} = {};
     cases.forEach(c => {
       casesByName[c["@name"]] = c;
     });
@@ -135,7 +135,7 @@ export default class JUnitStrategy {
     // Initialize a list of lists with exactly _total_ items
     this.lists = [];
     for (let i = 0; i < this.total; i++) {
-      this.lists.push({ list: new Set(), caseTimeTotal: 0.0 });
+      this.lists.push({list: new Set(), caseTimeTotal: 0.0});
     }
 
     // Add each test to the list that has the smallest total timing sum. Add the new timing
@@ -152,9 +152,12 @@ export default class JUnitStrategy {
       bestList.caseTimeTotal += testWithTiming.timing;
 
       log.debug(
-        `Assigning ${testWithTiming.name
-        } to list ${bestIndex}, which now has a ${bestList.caseTimeTotal
-        } estimated runtime (previously ${bestList.caseTimeTotal - testWithTiming.timing
+        `Assigning ${
+          testWithTiming.name
+        } to list ${bestIndex}, which now has a ${
+          bestList.caseTimeTotal
+        } estimated runtime (previously ${
+          bestList.caseTimeTotal - testWithTiming.timing
         })`,
       );
     });

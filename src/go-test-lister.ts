@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-import { spawnSync } from "child_process";
+import {spawnSync} from "child_process";
 import * as fs from "fs";
-import { DefaultLogger as log } from "./logger";
+import {DefaultLogger as log} from "./logger";
 import JUnitStrategy from "./strategies/junit";
 import NaiveStrategy from "./strategies/naive";
 
@@ -61,7 +61,7 @@ export class GoTestLister {
     const cmd = spawnSync(g, args, {
       cwd: this.opts.workingDirectory,
       encoding: "utf-8",
-      env: { ...process.env, ...this.opts.env },
+      env: {...process.env, ...this.opts.env},
     });
 
     if (cmd.error) {
