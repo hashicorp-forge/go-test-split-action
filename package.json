@@ -23,13 +23,13 @@
   "dependencies": {
     "@actions/core": "^3.0.0",
     "@actions/io": "^3.0.2",
-    "fast-xml-parser": "^5.10.1"
+    "fast-xml-parser": "^5.11.1"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^26.4.1",
-    "@vercel/ncc": "^0.44.1",
+    "@vercel/ncc": "^0.45.0",
     "husky": "^9.1.7",
     "jest": "^30.5.1",
     "prettier": "^3.9.6",
