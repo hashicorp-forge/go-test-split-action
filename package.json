@@ -23,7 +23,7 @@
   "dependencies": {
     "@actions/core": "^3.0.0",
     "@actions/io": "^3.0.2",
-    "fast-xml-parser": "^5.10.1"
+    "fast-xml-parser": "^5.11.1"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
